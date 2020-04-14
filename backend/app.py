@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restful import Api
-# from models import User
+from resources.models import User
 from resources.Register import Register
 # from resources.Signin import Signin
 # from resources.Task import Tasks

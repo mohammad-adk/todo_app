@@ -1,10 +1,34 @@
 from flask_restful import  Resource
 from flask import request
+from resources.models import db , User
 
 class Register(Resource):
+
+    def get(self):
+        users = User.query.all()
+        user_list = []
+        for i in range(0, len(users)):
+            user_list.append(users[i].serialize())
+        return {'status': 'success', 'data': str(user_list)}, 200
+
     def post(self):
-        data = request.get_json()
-        username = data['username']
-        password = data['password']
-        email = data['email']
-        return {'message' : 'registering {}'.format(username)}
+        json_data = request.get_json(force=True)
+        if not json_data:
+               return {'message': 'No input data provided'}, 400
+        user = User.query.filter_by(username=json_data['username']).first()
+        if user:
+            return {'message': 'User already exists'}, 400
+        user = User(
+        username = json_data['username'],
+        firstname= json_data['firstname'],
+        lastname = json_data['lastname'],
+        password = json_data['password'],
+        email = json_data['email']
+            )
+        
+        db.session.add(user)
+        db.session.commit()
+
+        result = User.serialize(user)
+
+        return { "status": 'success', 'data': result }, 201

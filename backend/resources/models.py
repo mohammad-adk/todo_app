@@ -18,8 +18,8 @@ class User(db.Model):
     email = db.Column(db.String())
     api_key = db.Column(db.String())
 
-    def __init__(self, firstname, lastname, email, password, username):
-        # self.api_key = api_key
+    def __init__(self, api_key, firstname, lastname, email, password, username):
+        self.api_key = api_key
         self.firstname = firstname
         self.lastname = lastname
         self.email = email

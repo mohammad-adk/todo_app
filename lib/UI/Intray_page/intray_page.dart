@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/models/classes/task.dart';
-import 'package:todo_app/models/global.dart';
-import 'package:todo_app/models/widgets/intray_todo_widget.dart';
+import '../../models/task.dart';
+import '../../global.dart';
+import '../../widgets/intray_todo_widget.dart';
 
 class IntrayPage extends StatefulWidget {
   @override

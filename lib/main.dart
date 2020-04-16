@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/UI/Intray_page/intray_page.dart';
-import 'package:todo_app/models/global.dart';
+
+import './UI/Intray_page/intray_page.dart';
+import './UI/splash_screen/auth_screen.dart';
+import './global.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Todo App'),
+      home: AuthScreen(),
     );
   }
 }

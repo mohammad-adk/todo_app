@@ -46,6 +46,7 @@ class AuthCard extends StatefulWidget {
   const AuthCard({
     Key key,
   }) : super(key: key);
+
   @override
   _AuthCardState createState() => _AuthCardState();
 }
@@ -157,7 +158,6 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
       if (_authMode == AuthMode.Login) {
         await Provider.of<Auth>(context, listen: false)
             .login(_authData['email'], _authData['password']);
-        // Log user in
       } else {
         await Provider.of<Auth>(context, listen: false).signUp(
             email: _authData['email'],
@@ -167,6 +167,7 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
             lastName: _authData['lastName']);
       }
     } catch (error) {
+      print(error);
       var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
         errorMessage = 'This email address is already in use.';
@@ -206,6 +207,7 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
         width: deviceSize.width * 0.75,
         height: _authMode == AuthMode.SignUp ? 320 : 260,
         child: Form(
+          key: _formKey,
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -233,8 +235,8 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                         enabled: _authMode == AuthMode.SignUp,
                         validator: _authMode == AuthMode.SignUp
                             ? (value) {
-                                if (value != _passwordController.value.text) {
-                                  return "Name is invalid!";
+                                if (value == null) {
+                                  return "Name is Empty!";
                                 } else
                                   return null;
                               }
@@ -267,8 +269,8 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                         enabled: _authMode == AuthMode.SignUp,
                         validator: _authMode == AuthMode.SignUp
                             ? (value) {
-                                if (value != _passwordController.value.text) {
-                                  return 'errorText';
+                                if (value == null) {
+                                  return 'Last name could not be empty';
                                 } else
                                   return null;
                               }
@@ -300,8 +302,8 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                         enabled: _authMode == AuthMode.SignUp,
                         validator: _authMode == AuthMode.SignUp
                             ? (value) {
-                                if (value != _passwordController.value.text) {
-                                  return 'errorText';
+                                if (value == null || value.length <= 4) {
+                                  return 'username is too short';
                                 } else
                                   return null;
                               }

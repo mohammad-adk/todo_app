@@ -32,7 +32,7 @@ class Auth with ChangeNotifier {
       String email,
       String firstName,
       String lastName}) async {
-    final url = '127.0.0.1:5000/api/register';
+    final url = 'http://127.0.0.1:5000/api/register';
     try {
       final response = await http.post(
         url,
@@ -48,7 +48,7 @@ class Auth with ChangeNotifier {
       );
       final responseData = json.decode(response.body);
       if (responseData['error'] != null) {
-//        print(responseData['error']['message']);
+        print(responseData['error']['message']);
         throw Exception(responseData['error']['message']);
       }
       _token = responseData['api'];
@@ -58,26 +58,67 @@ class Auth with ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       final userData = json.encode({
         'token': token,
-        'userId': userId,
+        'userId': username,
         'expiryDate': _expiryDate.toIso8601String(),
       });
       prefs.setString('userData', userData);
-    } catch (error){
+    } catch (error) {
+      print(error);
       throw error;
     }
   }
 
-
-  Future<void> login (String email , String password) async{
-    final url = '127.0.0.1:5000/api/register';
+  Future<void> login(String email, String password) async {
+    final url = 'http://127.0.0.1:5000/api/register';
     try {
-      final response = await http.post(url, body: json.encode({
-        'email': email,
-        'password': password,
-      },),);
-    }catch (error){
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
+            'email': email,
+            'password': password,
+          },
+        ),
+      );
+      final responseData = json.decode(response.body);
+      if (responseData['error'] != null) {
+        throw Exception(responseData['error']['message']);
+      }
+      _token = responseData['api'];
+      _username = responseData['username'];
+      _expiryDate = DateTime.now().add(Duration(hours: 1));
+      notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
+      final userData = json.encode({
+        'token': token,
+        'userId': username,
+        'expiryDate': _expiryDate.toIso8601String(),
+      });
+      prefs.setString('userData', userData);
+    } catch (error) {
+      print(error);
       throw Exception;
     }
+  }
 
+  Future<bool> tryAutoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    final extractedUserData =
+        json.decode(prefs.getString('userData')) as Map<String, Object>;
+    final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
+    if (!extractedUserData.containsKey('token')) {
+      return false;
+    }
+
+    if (expiryDate.isAfter(DateTime.now())) {
+      return false;
+    }
+
+    _token = extractedUserData['token'];
+    _username = extractedUserData['userId'];
+    _expiryDate = expiryDate;
+    notifyListeners();
+//    _autoLogout();
+    return true;
   }
 }

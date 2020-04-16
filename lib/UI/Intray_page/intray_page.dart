@@ -15,12 +15,11 @@ class _IntrayPageState extends State<IntrayPage> {
   Widget build(BuildContext context) {
     taskList = getList();
     return Container(
-      color: darkGreyColor,
-      child: _buildReorderableListSimple(context, taskList)
-      );
+        color: darkGreyColor,
+        child: _buildReorderableListSimple(context, taskList));
   }
 
- Widget _buildListTile(BuildContext context, Task item) {
+  Widget _buildListTile(BuildContext context, Task item) {
     return ListTile(
       key: Key(item.taskID.toString()),
       title: IntrayTodo(
@@ -30,7 +29,7 @@ class _IntrayPageState extends State<IntrayPage> {
   }
 
   Widget _buildReorderableListSimple(
-    BuildContext context, List<Task> taskList) {
+      BuildContext context, List<Task> taskList) {
     return Theme(
       data: ThemeData(canvasColor: Colors.transparent),
       child: ReorderableListView(
@@ -50,18 +49,17 @@ class _IntrayPageState extends State<IntrayPage> {
     );
   }
 
-List<Task> getList(){
-  if (taskList.length != 0){
-    return taskList;
+  List<Task> getList() {
+    if (taskList.length != 0) {
+      return taskList;
+    } else {
+      for (int i = 0; i < 15; i++) {
+        taskList.add(Task(
+            title: "Todo number" + i.toString(),
+            completed: false,
+            taskID: i.toString()));
+      }
+      return taskList;
+    }
   }
-  else{
-  for (int i = 0; i < 15 ; i++){
-    taskList.add(Task(
-      title: "Todo number" + i.toString(),
-       completed: false,
-        taskID: i.toString()));
-  }
-  return taskList;
-}
-}
 }

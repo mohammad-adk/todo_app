@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import './Intray_page/intray_page.dart';
+import '../providers/auth.dart';
 import '../global.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -14,6 +17,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    Function logout = Provider.of<Auth>(context).logout;
     return MaterialApp(
       color: Colors.yellow,
       home: SafeArea(
@@ -28,6 +32,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     IntrayPage(),
                     new Container(
                       color: Colors.blueGrey,
+                      child: Center(
+                        child: FlatButton(child: Text('logout'), onPressed: logout,),
+                      ),
                     ),
                     new Container(
                       color: Colors.lightBlue,

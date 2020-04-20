@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './Intray_page/intray_page.dart';
+import 'intray_page.dart';
 import '../providers/auth.dart';
 import '../global.dart';
+import './new_task.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -15,6 +16,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  void _startAddNewTask(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (bCtx) {
+          return GestureDetector(
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+            child: NewTask(),
+          );
+        });
+  }
   @override
   Widget build(BuildContext context) {
     Function logout = Provider.of<Auth>(context).logout;
@@ -65,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 80,
                   child: FloatingActionButton(
                     backgroundColor: Colors.red,
-                    onPressed: () {},
+                    onPressed: () => _startAddNewTask(context),
                     child: Icon(
                       Icons.add,
                       size: 50,

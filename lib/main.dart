@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/providers/tasks.dart';
 
 import './UI/home_page.dart';
-import './UI/splash_screen/auth_screen.dart';
+import 'UI/auth_screen.dart';
 import './providers/auth.dart';
 import './UI/splash_screen.dart';
+import './providers/tasks.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,6 +18,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => Auth(),
         ),
+        ChangeNotifierProxyProvider<Auth,Tasks>(
+          create: (_) => Tasks(),
+          update: (_, auth, previousTasks)=>Tasks()..update(auth.token, auth.userId, previousTasks == null ? [] : previousTasks.tasks),
+        )
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(

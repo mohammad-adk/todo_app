@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../models/task.dart';
-import '../../global.dart';
-import '../../widgets/intray_todo_widget.dart';
+import 'package:provider/provider.dart';
+
+import '../models/task.dart';
+import '../global.dart';
+import '../widgets/intray_todo_widget.dart';
+import '../providers/tasks.dart';
 
 class IntrayPage extends StatefulWidget {
   @override
@@ -51,13 +54,15 @@ class _IntrayPageState extends State<IntrayPage> {
 
   List<Task> getList() {
     if (taskList.length != 0) {
-      return taskList;
+      return Provider.of<Tasks>(context).tasks;
     } else {
       for (int i = 0; i < 15; i++) {
-        taskList.add(Task(
+        taskList.add(
+          Task(
             title: "Todo number" + i.toString(),
-            completed: false,
-            taskID: i.toString()));
+            deadLine: DateTime.now().add(Duration(days: 1)),
+          ),
+        );
       }
       return taskList;
     }

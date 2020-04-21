@@ -33,7 +33,6 @@ class Tasks with ChangeNotifier {
             'taskID': task.taskID,
             'notes': task.notes,
             'repeats': task.repeats,
-            'timeToComplete': task.timeToComplete,
             'deadLine': task.deadLine.toIso8601String(),
             'completed': task.completed,
           },

@@ -16,18 +16,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  void _startAddNewTask(BuildContext ctx) {
-    showModalBottomSheet(
-        context: ctx,
-        builder: (bCtx) {
-          return GestureDetector(
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-            child: NewTask(),
-          );
-        });
-  }
+  
   @override
   Widget build(BuildContext context) {
     Function logout = Provider.of<Auth>(context).logout;
@@ -78,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 80,
                   child: FloatingActionButton(
                     backgroundColor: Colors.red,
-                    onPressed: () => _startAddNewTask(context),
+                    onPressed: () => Navigator.pushNamed(context, NewTask.routeName),
                     child: Icon(
                       Icons.add,
                       size: 50,

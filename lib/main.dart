@@ -7,6 +7,7 @@ import 'UI/auth_screen.dart';
 import './providers/auth.dart';
 import './UI/splash_screen.dart';
 import './providers/tasks.dart';
+import './UI/new_task.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,9 +26,10 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Todo App',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.purple,
           ),
           home: auth.isAuth
               ? MyHomePage()
@@ -41,6 +43,7 @@ class MyApp extends StatelessWidget {
                 ),
           routes: {
             MyHomePage.routeName: (ctx) => MyHomePage(),
+            NewTask.routeName:(ctx) => NewTask(),
           },
         ),
       ),

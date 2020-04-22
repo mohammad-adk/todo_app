@@ -60,7 +60,9 @@ class _IntrayPageState extends State<IntrayPage> {
         taskList.add(
           Task(
             title: "Todo number" + i.toString(),
-            deadLine: DateTime.now().add(Duration(days: 1)),
+            deadLine: DateTime.now().add(Duration(days: 1),),
+            notes: 'Test Text ',
+            repeats: [],
           ),
         );
       }

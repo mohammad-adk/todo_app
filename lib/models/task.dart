@@ -1,10 +1,18 @@
+import 'package:flutter/foundation.dart';
+
 class Task {
   String title;
   String taskID;
   String notes;
-  String repeats;
+  List<String> repeats;
   DateTime deadLine;
   bool completed;
 
-  Task({this.title, this.deadLine, this.completed = false, this.notes,});
+  Task(
+      {@required this.title,
+      @required this.deadLine,
+      @required this.notes,
+      @required this.repeats,
+      this.completed = false,
+      });
 }

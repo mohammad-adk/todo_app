@@ -16,7 +16,7 @@ class NewTask extends StatefulWidget {
 class _NewTaskState extends State<NewTask> {
   final _titleController = TextEditingController();
   final _notesController = TextEditingController();
-  String _repeat;
+  List<String> _repeat = [];
   String _repeatText;
   DateTime _selectedDate;
   TimeOfDay _selectedTime;
@@ -29,42 +29,63 @@ class _NewTaskState extends State<NewTask> {
         title: _titleController.value.text,
         deadLine: _selectedDate,
         notes: _notesController.value.text,
+        repeats: _repeat,
       ),
     );
     Navigator.of(context).pop();
   }
 
-  Widget weekButton(String day) {
-    bool value = true;
-    return FlatButton(
-      child: Container(
-        height: 55,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              day,
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
-            ),
-            Checkbox(
-              value: value,
-              onChanged: (_) {},
-            )
-          ],
+  Widget weekButton(String day, List<String> _localRepeat) {
+    var isChecked = _localRepeat.contains(day);
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setModalState) {
+      return FlatButton(
+        child: Container(
+          height: 48,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                day,
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
+              ),
+              Checkbox(
+                value: isChecked,
+                onChanged: (_) {
+                  setModalState(() {
+                  if (isChecked){
+                    _localRepeat.remove(day);}
+                  else{
+                    _localRepeat.add(day);
+                  }
+                    isChecked = !isChecked;
+                  print(isChecked);
+                  print(_localRepeat);
+                  });
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-      onPressed: () {
-        setState(() {
-          value = !value;
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
-        });
-      },
-    );
+        onPressed: () {
+          setModalState(() {
+            if (isChecked){
+              _localRepeat.remove(day);}
+            else{
+              _localRepeat.add(day);
+            }
+            isChecked = !isChecked;
+          });
+        },
+      );
+    });
   }
 
   void customRepeatBottomSheet() {
+    List<String> _localRepeat = [];
     showModalBottomSheet(
       backgroundColor: Color.fromRGBO(0, 0, 0, 0),
       context: context,
@@ -74,27 +95,60 @@ class _NewTaskState extends State<NewTask> {
           behavior: HitTestBehavior.opaque,
           child: Container(
             decoration: BoxDecoration(
-                color: darkGreyColor,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40)),
+              color: darkGreyColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
             ),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text('Repeat', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),),
+                    child: Text(
+                      'Repeat',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    ),
                   ),
-                  weekButton('Saturday'),
-                  weekButton('Sunday'),
-                  weekButton('Monday'),
-                  weekButton('Tuesday'),
-                  weekButton('Wednesday'),
-                  weekButton('Thursday'),
-                  weekButton('Friday'),
+                  weekButton('Saturday',_localRepeat),
+                  weekButton('Sunday',_localRepeat),
+                  weekButton('Monday',_localRepeat),
+                  weekButton('Tuesday',_localRepeat),
+                  weekButton('Wednesday',_localRepeat),
+                  weekButton('Thursday',_localRepeat),
+                  weekButton('Friday',_localRepeat),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              'Done',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                            Icon(
+                              Icons.done_outline,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                        onPressed: () {
+                          _repeat = _localRepeat;
+                          _repeatText = 'Custom';
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
@@ -123,64 +177,94 @@ class _NewTaskState extends State<NewTask> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 30,),
-                  FlatButton(
-                    child: Text(
-                      'Once',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _repeatText = 'Once';
-                      });
-                      _repeat = '';
-                      Navigator.of(bCtx).pop();
-                    },
+                  SizedBox(
+                    height: 30,
                   ),
-                  FlatButton(
-                    child: Text(
-                      'Daily',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _repeatText = 'Daily';
-                      });
-                      _repeat = 'Sun Mon Tue Wed Thu Fri Sat';
-                      Navigator.of(context).pop();
-                    },
+                  Divider(height: 1, thickness: 1,),
+                  Row(
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text(
+                          'Once',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.end,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _repeatText = 'Once';
+                          });
+                          _repeat = [];
+                          Navigator.of(bCtx).pop();
+                        },
+                      ),
+                    ],
                   ),
-                  FlatButton(
-                    child: Text(
-                      'Mon to Fri',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _repeatText = 'Mon to Fri';
-                      });
-                      _repeat = 'Mon Tue Wed Thu Fri';
-                      Navigator.of(context).pop();
-                    },
+                  Divider(height: 1, thickness: 1,),
+                  Row(
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text(
+                          'Daily',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400),
+                          textAlign: TextAlign.end,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _repeatText = 'Daily';
+                          });
+                          _repeat = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
                   ),
-                  FlatButton(
-                    child: Text(
-                      'Custom',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    onPressed: customRepeatBottomSheet,
+                  Divider(height: 1, thickness: 1,),
+                  Row(
+
+                    children: <Widget>[
+                      SizedBox(width: 6,),
+                      FlatButton(
+                        child: Text(
+                          'Mon to Fri',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400),
+                          textAlign: TextAlign.right,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _repeatText = 'Mon to Fri';
+                          });
+                          _repeat = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                  Divider(height: 1, thickness: 1,),
+                  Row(
+                    children: <Widget>[
+                      SizedBox(width: 6,),
+                      FlatButton(
+                        child: Text(
+                          'Custom',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400),
+                          textAlign: TextAlign.end,
+                        ),
+                        onPressed: customRepeatBottomSheet,
+                      ),
+                    ],
                   ),
                 ],
               ),

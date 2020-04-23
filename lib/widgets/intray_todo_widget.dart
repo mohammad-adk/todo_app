@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import '../global.dart';
+import '../models/task.dart';
+
 
 class IntrayTodo extends StatelessWidget {
-  final String title;
+  final Task task;
 
-  IntrayTodo({this.title});
+  IntrayTodo({this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +30,16 @@ class IntrayTodo extends StatelessWidget {
         children: <Widget>[
           Radio(),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                title,
+                task.title,
                 style: darkTodoTitle,
+              ),
+              Text(
+               task.deadLine.toString(),
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 15,fontWeight: FontWeight.w900),
               )
             ],
           )

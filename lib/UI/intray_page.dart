@@ -5,6 +5,7 @@ import '../models/task.dart';
 import '../global.dart';
 import '../widgets/intray_todo_widget.dart';
 import '../providers/tasks.dart';
+import '../widgets/reorderable_todo_widget.dart';
 
 class IntrayPage extends StatefulWidget {
   @override
@@ -13,49 +14,62 @@ class IntrayPage extends StatefulWidget {
 
 class _IntrayPageState extends State<IntrayPage> {
   List<Task> taskList = [];
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    _isLoading = true;
+    Provider.of<Tasks>(context, listen: false).fetchAndSetTasks().then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     taskList = getList();
-    return Container(
+    return  Container(
         color: darkGreyColor,
-        child: _buildReorderableListSimple(context, taskList));
+        child: _isLoading ? Center(
+          child: CircularProgressIndicator(),
+        ) : _buildReorderableListSimple(context, taskList));
   }
 
   Widget _buildListTile(BuildContext context, Task item) {
     return ListTile(
       key: Key(item.taskID.toString()),
       title: IntrayTodo(
-        title: item.title,
+        task: item,
       ),
     );
   }
 
   Widget _buildReorderableListSimple(
       BuildContext context, List<Task> taskList) {
-    return Theme(
+    return  Theme(
       data: ThemeData(canvasColor: Colors.transparent),
-      child: ReorderableListView(
-        // handleSide: ReorderableListSimpleSide.Right,
-        // handleIcon: Icon(Icons.access_alarm),
-        padding: EdgeInsets.only(top: 300.0),
-        children:
-            taskList.map((Task item) => _buildListTile(context, item)).toList(),
-        onReorder: (oldIndex, newIndex) {
-          setState(() {
-            Task item = taskList[oldIndex];
-            taskList.remove(item);
-            taskList.insert(newIndex, item);
-          });
+      child: ListView.builder(
+        padding: EdgeInsets.only(top: 250),
+        itemBuilder: (ctx, index){
+          return _buildListTile(context, taskList[index]);
         },
+        itemCount: taskList.length,
+//        taskList.map((Task item) => _buildListTile(context, item)).toList(),
       ),
     );
   }
 
   List<Task> getList() {
-    if (taskList.length != 0) {
-      return Provider.of<Tasks>(context).tasks;
+//    taskList = Provider.of<Tasks>(context).tasks;
+//    return Provider.of<Tasks>(context).tasks;
+    if (Provider.of<Tasks>(context).tasks.length != 0 && taskList.length != 0) {
+      return Provider
+          .of<Tasks>(context)
+          .tasks;
     } else {
+      taskList = [];
       for (int i = 0; i < 15; i++) {
         taskList.add(
           Task(

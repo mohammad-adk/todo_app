@@ -319,6 +319,7 @@ class _NewTaskState extends State<NewTask> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: "Title",
                     labelStyle: TextStyle(color: Colors.white),
@@ -336,6 +337,7 @@ class _NewTaskState extends State<NewTask> {
                           style: BorderStyle.solid),
                       borderRadius: BorderRadius.circular(20),
                     ),
+
                   ),
                   controller: _titleController,
                   onSubmitted: (_) => _submitData(),

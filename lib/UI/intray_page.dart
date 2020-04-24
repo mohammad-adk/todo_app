@@ -5,7 +5,6 @@ import '../models/task.dart';
 import '../global.dart';
 import '../widgets/intray_todo_widget.dart';
 import '../providers/tasks.dart';
-import '../widgets/reorderable_todo_widget.dart';
 
 class IntrayPage extends StatefulWidget {
   @override
@@ -30,18 +29,27 @@ class _IntrayPageState extends State<IntrayPage> {
   @override
   Widget build(BuildContext context) {
     taskList = getList();
-    return  Container(
-        color: darkGreyColor,
-        child: _isLoading ? Center(
-          child: CircularProgressIndicator(),
-        ) : _buildReorderableListSimple(context, taskList));
+    return  Provider(
+      create: (_) => Tasks(),
+      child: Container(
+          color: darkGreyColor,
+          child: _isLoading ? Center(
+            child: CircularProgressIndicator(),
+          ) : _buildReorderableListSimple(context, taskList)),
+    );
   }
 
   Widget _buildListTile(BuildContext context, Task item) {
     return ListTile(
-      key: Key(item.taskID.toString()),
-      title: IntrayTodo(
-        task: item,
+      key: Key(item.taskID),
+      title: Dismissible(
+        key: Key(item.taskID),
+        onDismissed: (direction){
+          Provider.of<Tasks>(context,listen: false).deleteTask(item.taskID);
+        },
+        child: IntrayTodo(
+          task: item,
+        ),
       ),
     );
   }

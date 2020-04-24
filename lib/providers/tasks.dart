@@ -42,7 +42,7 @@ class Tasks with ChangeNotifier {
             Task(
               taskID: taskId,
               title: taskData['title'],
-              deadLine: DateTime.parse(taskData['deadline']),
+              deadLine: taskData['deadline'],
               repeats: taskData['repeats'] ,
               notes: taskData['notes'],
               completed: taskData['completed'],
@@ -86,7 +86,7 @@ class Tasks with ChangeNotifier {
 
   Future<void> deleteTask(String id) async {
     final url =
-        'https://todo-cfb1d.firebaseio.com/tasks/$userId.json?auth=$authToken';
+        'https://todo-cfb1d.firebaseio.com/tasks/$userId/$id.json?auth=$authToken';
     final existingTaskIndex = _tasks.indexWhere((task) => task.taskID == id);
     var existingTask = _tasks[existingTaskIndex];
     _tasks.removeWhere((task) => task.taskID == id);

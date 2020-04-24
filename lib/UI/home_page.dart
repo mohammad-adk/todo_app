@@ -21,6 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     Function logout = Provider.of<Auth>(context).logout;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       color: Colors.yellow,
       home: SafeArea(
         top: true,

@@ -9,13 +9,6 @@ class Tasks with ChangeNotifier {
   List<Task> _tasks = [];
   String authToken;
   String userId;
-  bool isDisposed = false;
-
-  @override
-  void dispose() {
-    isDisposed = true;
-    super.dispose();
-  }
 
   void update(String token, String id, tasks) {
     authToken = token;
@@ -37,18 +30,16 @@ class Tasks with ChangeNotifier {
         return;
       }
       final List<Task> loadedTasks = [];
-      extractedData.forEach(
-        (String taskId , taskData) => loadedTasks.add(
+      extractedData.forEach((String taskId, taskData) => loadedTasks.add(
             Task(
               taskID: taskId,
               title: taskData['title'],
               deadLine: taskData['deadline'],
-              repeats: taskData['repeats'] ,
+              repeats: taskData['repeats'],
               notes: taskData['notes'],
               completed: taskData['completed'],
             ),
-          )
-      );
+          ));
       _tasks = loadedTasks;
     } catch (error) {
       throw error;

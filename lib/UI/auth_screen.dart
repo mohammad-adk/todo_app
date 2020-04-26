@@ -160,10 +160,12 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
             .login(_authData['email'], _authData['password']);
       } else {
         await Provider.of<Auth>(context, listen: false).signUp(
-            email: _authData['email'],
-            password: _authData['password'],
-            firstName: _authData['firstName'],
-            lastName: _authData['lastName']);
+          email: _authData['email'],
+          password: _authData['password'],
+          firstName: _authData['firstName'],
+          lastName: _authData['lastName'],
+          username: _authData['username'],
+        );
       }
     } catch (error) {
       print(error);
@@ -278,39 +280,39 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-//                AnimatedContainer(
-//                  curve: Curves.easeIn,
-//                  duration: Duration(milliseconds: 300),
-//                  constraints: BoxConstraints(
-//                      minHeight: _authMode == AuthMode.SignUp ? 60 : 0,
-//                      maxHeight: _authMode == AuthMode.SignUp ? 120 : 0),
-//                  child: FadeTransition(
-//                    opacity: _opacityAnimation,
-//                    child: SlideTransition(
-//                      position: _slideAnimation,
-//                      child: TextFormField(
-//                        decoration: InputDecoration(labelText: 'Username'),
-//                        textInputAction: TextInputAction.next,
-//                        onFieldSubmitted: (_) {
-//                          FocusScope.of(context).requestFocus(_emailFocusNode);
-//                        },
-//                        onSaved: (value) {
-//                          _authData['username'] = value;
-//                        },
-//                        focusNode: _userNameFocusNode,
-//                        enabled: _authMode == AuthMode.SignUp,
-//                        validator: _authMode == AuthMode.SignUp
-//                            ? (value) {
-//                                if (value == null || value.length <= 4) {
-//                                  return 'username is too short';
-//                                } else
-//                                  return null;
-//                              }
-//                            : null,
-//                      ),
-//                    ),
-//                  ),
-//                ),
+                AnimatedContainer(
+                  curve: Curves.easeIn,
+                  duration: Duration(milliseconds: 300),
+                  constraints: BoxConstraints(
+                      minHeight: _authMode == AuthMode.SignUp ? 60 : 0,
+                      maxHeight: _authMode == AuthMode.SignUp ? 120 : 0),
+                  child: FadeTransition(
+                    opacity: _opacityAnimation,
+                    child: SlideTransition(
+                      position: _slideAnimation,
+                      child: TextFormField(
+                        decoration: InputDecoration(labelText: 'Username'),
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_emailFocusNode);
+                        },
+                        onSaved: (value) {
+                          _authData['username'] = value;
+                        },
+                        focusNode: _userNameFocusNode,
+                        enabled: _authMode == AuthMode.SignUp,
+                        validator: _authMode == AuthMode.SignUp
+                            ? (value) {
+                                if (value == null || value.length <= 4) {
+                                  return 'username is too short';
+                                } else
+                                  return null;
+                              }
+                            : null,
+                      ),
+                    ),
+                  ),
+                ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,

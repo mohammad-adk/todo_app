@@ -285,7 +285,7 @@ class _NewTaskState extends State<NewTask> {
         return;
       } else {
         showTimePicker(
-                context: context, initialTime: TimeOfDay(hour: 12, minute: 0))
+                context: context, initialTime: TimeOfDay(hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute))
             .then((pickedTime) {
           if (pickedTime == null) {
             return;

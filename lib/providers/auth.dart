@@ -65,12 +65,10 @@ class Auth with ChangeNotifier {
           },
         ),
       );
-
       final responseData = json.decode(response.body);
       if (responseData['error'] != null) {
         throw Exception(responseData['error']['message']);
       }
-
       _token = responseData['idToken'];
       _userId = responseData['localId'];
       _expiryDate = DateTime.now()
@@ -87,13 +85,14 @@ class Auth with ChangeNotifier {
         'lastname': _lastName,
       });
       prefs.setString('userData', userData);
+      notifyListeners();
     } catch (error) {
       throw error;
     }
   }
 
   Future<void> saveUserInfo(
-      String username, String firstName, String lastName) async {
+      String firstName, String lastName, String username) async {
     final url2 =
         'https://todo-cfb1d.firebaseio.com/users/$_userId.json?auth=$token';
     print(username);
@@ -116,6 +115,7 @@ class Auth with ChangeNotifier {
       _firstName = firstName;
       _lastName = lastName;
       _username = username;
+      notifyListeners();
     } catch (error) {
       print(error);
     }

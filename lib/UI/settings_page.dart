@@ -72,7 +72,7 @@ class SettingsPage extends StatelessWidget {
               ),
               Row(
                 children: <Widget>[
-                  Text('Last Name', style: TextStyle(color: Colors.white)),
+                  Text('Username', style: TextStyle(color: Colors.white)),
                   SizedBox(
                     width: 10,
                   ),
@@ -91,12 +91,6 @@ class SettingsPage extends StatelessWidget {
                 ],
               ),
 
-//            Text('Username: ${user.userName}',
-//                style: TextStyle(color: Colors.white)),
-//            Text('FirstName: ${user.firstName}',
-//                style: TextStyle(color: Colors.white)),
-//            Text('LastName: ${user.lastName}',
-//                style: TextStyle(color: Colors.white)),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[

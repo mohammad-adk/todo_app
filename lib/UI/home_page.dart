@@ -78,9 +78,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   void toggle(index) {
-    switch (index){
-      case 0 : _opacityController.reverse();break;
-      case 1 : _opacityController.forward();break;
+    switch (index) {
+      case 0:
+        _opacityController.reverse();
+        break;
+      case 1:
+        _opacityController.forward();
+        break;
     }
   }
 
@@ -94,35 +98,73 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         child: Scaffold(
           body: Stack(
             children: <Widget>[
-               TabBarView(
-                 key: Key('tabbar'),
-                  controller: _tabController,
-                  children: [
-                    Container(
-                      color: Colors.blueGrey,
+              TabBarView(
+                controller: _tabController,
+                children: [
+                  Container(
+                    color: darkGreyColor,
+                  ),
+                  IntrayPage(),
+                  SettingsPage(),
+                ],
+              ),
+              Stack(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(left: 50),
+                    height: 160,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(60),
+                          bottomRight: Radius.circular(60)),
+                      color: Colors.white,
                     ),
-            GestureDetector(
-                onHorizontalDragStart: _onDragStart,
-                onHorizontalDragUpdate: _onDragUpdate,
-                onHorizontalDragEnd: _onDragEnd,
-                child: IntrayPage()),
-                    SettingsPage(),
-                  ],
-                ),
-          FadeTransition(
-            opacity: ReverseAnimation(_opacityController),
-            child: calendar(context),
-          ),
-          FadeTransition(
-            opacity: _opacityController,
-            child: intray(context),
-          ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Stack(
+                          children: <Widget>[
+                            FadeTransition(
+                                opacity:
+                                    ReverseAnimation(_tabController.animation),
+                                child:
+                                    Text("Home", style: intrayTitleTextStyle)),
+                            FadeTransition(
+                                opacity: _tabController.animation,
+                                child: Text("Intray",
+                                    style: intrayTitleTextStyle)),
+                          ],
+                        ),
+                        Container()
+                      ],
+                    ),
+                  ),
+                  FadeTransition(
+                    opacity: _tabController.animation,
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          top: 120,
+                          left: (MediaQuery.of(context).size.width) / 2 - 40),
+                      width: 80,
+                      height: 80,
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.red,
+                        onPressed: () =>
+                            Navigator.pushNamed(context, NewTask.routeName),
+                        child: Icon(
+                          Icons.add,
+                          size: 50,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
           appBar: AppBar(
             elevation: 0,
             title: TabBar(
-              onTap: (index) => toggle(index),
               controller: _tabController,
               tabs: [
                 Tab(
@@ -145,61 +187,4 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ),
     );
   }
-}
-
-Widget intray(BuildContext context) {
-  return Stack(
-    children: <Widget>[
-      Container(
-        padding: EdgeInsets.only(left: 50),
-        height: 160,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(60),
-              bottomRight: Radius.circular(60)),
-          color: Colors.white,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text("Intray", style: intrayTitleTextStyle),
-            Container()
-          ],
-        ),
-      ),
-      Container(
-        margin: EdgeInsets.only(
-            top: 120, left: (MediaQuery.of(context).size.width) / 2 - 40),
-        width: 80,
-        height: 80,
-        child: FloatingActionButton(
-          backgroundColor: Colors.red,
-          onPressed: () => Navigator.pushNamed(context, NewTask.routeName),
-          child: Icon(
-            Icons.add,
-            size: 50,
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-Widget calendar(BuildContext context) {
-  return Container(
-    padding: EdgeInsets.only(left: 50),
-    height: 160,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(60), bottomRight: Radius.circular(60)),
-      color: Colors.white,
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text("Home", style: intrayTitleTextStyle),
-        Container()
-      ],
-    ),
-  );
 }

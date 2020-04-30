@@ -26,6 +26,7 @@ class _IntrayPageState extends State<IntrayPage> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     taskList = getList();

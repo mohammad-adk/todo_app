@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'intray_page.dart';
@@ -19,9 +19,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   TabController _tabController;
   AnimationController _opacityController;
-  static const minDragStartEdge = 5.0;
-  static const maxDragStartEdge = 10.0;
-  bool _canBeDragged;
+  AnimationController _opacityController2;
+
+//  static const minDragStartEdge = 5.0;
+//  static const maxDragStartEdge = 10.0;
+//  bool _canBeDragged;
 
   double maxSlide = 300.0;
 
@@ -29,64 +31,68 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _opacityController = AnimationController(
-      vsync: this,
-      animationBehavior: AnimationBehavior.preserve,
-      duration: Duration(
-        milliseconds: 200,
-      ),
+      value: 1,
+      vsync: this
     );
-    _tabController = TabController(vsync: this, length: 3, initialIndex: 1);
-    _opacityController.forward();
+    _opacityController2 = AnimationController(
+      vsync: this
+    );
+    _tabController = TabController(vsync: this, length: 3, initialIndex: 1)
+      ..animation.addListener(() {
+            _opacityController.value = sin( _tabController.animation.value * pi/2);
+            _opacityController2.value = sin( (_tabController.animation.value - 1) * pi/2);
+      });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     _opacityController.dispose();
+    _opacityController2.dispose();
     super.dispose();
   }
 
-  void _onDragStart(DragStartDetails details) {
-    bool isDragOpenFromLeft = _opacityController.isDismissed &&
-        details.globalPosition.dx < minDragStartEdge;
-    bool isDragCloseFromRight = _opacityController.isCompleted &&
-        details.globalPosition.dx > maxDragStartEdge;
-
-    _canBeDragged = isDragOpenFromLeft || isDragCloseFromRight;
-  }
-
-  void _onDragUpdate(DragUpdateDetails details) {
-    if (_canBeDragged) {
-      double delta = details.primaryDelta / maxSlide;
-      _opacityController.value += delta;
-    }
-  }
-
-  void _onDragEnd(DragEndDetails details) {
-    if (_opacityController.isDismissed || _opacityController.isCompleted) {
-      return;
-    }
-    if (details.velocity.pixelsPerSecond.dx >= 365.0) {
-      double visualVelocity = details.velocity.pixelsPerSecond.dx /
-          MediaQuery.of(context).size.width;
-      _opacityController.fling(velocity: visualVelocity);
-    } else if (_opacityController.value < 0.5) {
-      _opacityController.reverse(from: _opacityController.value);
-    } else {
-      _opacityController.forward(from: _opacityController.value);
-    }
-  }
-
-  void toggle(index) {
-    switch (index) {
-      case 0:
-        _opacityController.reverse();
-        break;
-      case 1:
-        _opacityController.forward();
-        break;
-    }
-  }
+//  void _onDragStart(DragStartDetails details) {
+//    bool isDragOpenFromLeft = _opacityController.isDismissed &&
+//        details.globalPosition.dx < minDragStartEdge;
+//    bool isDragCloseFromRight = _opacityController.isCompleted &&
+//        details.globalPosition.dx > maxDragStartEdge;
+//
+//    _canBeDragged = isDragOpenFromLeft || isDragCloseFromRight;
+//  }
+//
+//  void _onDragUpdate(DragUpdateDetails details) {
+//    if (_canBeDragged) {
+//      double delta = details.primaryDelta / maxSlide;
+//      _opacityController.value += delta;
+//    }
+//  }
+//
+//  void _onDragEnd(DragEndDetails details) {
+//    if (_opacityController.isDismissed || _opacityController.isCompleted) {
+//      return;
+//    }
+//    if (details.velocity.pixelsPerSecond.dx >= 365.0) {
+//      double visualVelocity = details.velocity.pixelsPerSecond.dx /
+//          MediaQuery.of(context).size.width;
+//      _opacityController.fling(velocity: visualVelocity);
+//    } else if (_opacityController.value < 0.5) {
+//      _opacityController.reverse(from: _opacityController.value);
+//    } else {
+//      _opacityController.forward(from: _opacityController.value);
+//    }
+//  }
+//
+//  void toggle(index) {
+//    switch (index) {
+//      case 0:
+//        _opacityController.reverse();
+//        break;
+//      case 1:
+//        _opacityController.forward();
+//        break;
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +136,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 child:
                                     Text("Home", style: intrayTitleTextStyle)),
                             FadeTransition(
-                                opacity: _tabController.animation,
+                                opacity: _opacityController,
                                 child: Text("Intray",
+                                    style: intrayTitleTextStyle)),
+                            FadeTransition(
+                                opacity: _opacityController2,
+                                child: Text("User Info",
                                     style: intrayTitleTextStyle)),
                           ],
                         ),
@@ -140,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                   ),
                   FadeTransition(
-                    opacity: _tabController.animation,
+                    opacity: _opacityController,
                     child: Container(
                       margin: EdgeInsets.only(
                           top: 120,

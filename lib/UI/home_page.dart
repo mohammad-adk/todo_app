@@ -6,6 +6,7 @@ import 'intray_page.dart';
 import '../global.dart';
 import './new_task.dart';
 import './settings_page.dart';
+import './week_view.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -107,9 +108,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               TabBarView(
                 controller: _tabController,
                 children: [
-                  Container(
-                    color: darkGreyColor,
-                  ),
+                  WeekViewPage(),
                   IntrayPage(),
                   SettingsPage(),
                 ],

@@ -35,7 +35,7 @@ class Tasks with ChangeNotifier {
               taskID: taskId,
               title: taskData['title'],
               deadLine: taskData['deadline'],
-              repeats: taskData['repeats'],
+              repeats:  taskData['repeats'],
               notes: taskData['notes'],
               completed: taskData['completed'],
             ),
@@ -57,7 +57,7 @@ class Tasks with ChangeNotifier {
             'title': task.title,
             'notes': task.notes,
             'repeats': task.repeats,
-            'deadLine': task.deadLine.toString(),
+            'deadLine': task.deadLine,
             'completed': task.completed,
           },
         ),
@@ -88,5 +88,31 @@ class Tasks with ChangeNotifier {
       notifyListeners();
     }
     existingTask = null;
+  }
+
+  List<Task> getTasksOfDay(DateTime deadLine) {
+    if(tasks.isEmpty){
+      return [];
+    }
+    List<Task> dayTasks = [];
+    int i;
+    for (i = 0; i < tasks.length; i++) {
+      if (tasks[i].deadLine.year == deadLine.year &&
+          tasks[i].deadLine.month == deadLine.month &&
+          tasks[i].deadLine.day == deadLine.day) {
+        dayTasks.add(tasks[i]);
+      }
+    }
+    return dayTasks;
+  }
+
+  int getTaskOfDayCount(DateTime day){
+    if(day != null) {
+      List<Task> dayTasks = getTasksOfDay(day);
+      return dayTasks.length;
+    }
+    else{
+      return 0;
+    }
   }
 }

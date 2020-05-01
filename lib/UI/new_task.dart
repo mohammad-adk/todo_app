@@ -21,13 +21,11 @@ class _NewTaskState extends State<NewTask> {
   DateTime _selectedDate;
   TimeOfDay _selectedTime;
 
-//  final _amountController = TextEditingController();
-
   void _submitData() {
     Provider.of<Tasks>(context, listen: false).addTasks(
       Task(
         title: _titleController.value.text,
-        deadLine: _selectedDate,
+        deadLine: DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,_selectedTime.hour, _selectedTime.minute),
         notes: _notesController.value.text,
         repeats: _repeat,
       ),

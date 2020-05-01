@@ -19,6 +19,6 @@ class Task {
 
   @override
   String toString() {
-    return "title: $title, taskId : $taskID";
+    return "title: $title";
   }
 }

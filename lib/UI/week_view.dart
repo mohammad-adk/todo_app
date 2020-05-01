@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../global.dart';
@@ -11,11 +13,11 @@ class WeekViewPage extends StatefulWidget {
 class _WeekViewPageState extends State<WeekViewPage> {
   @override
   Widget build(BuildContext context) {
-    const baseWidth = 5.0;
-    const baseHeight = 30.0;
+    const baseWidth = 25.0;
+    const baseHeight = 130.0;
     return Container(
       color: darkGreyColor,
-      padding: EdgeInsets.only(top: 200, left: 20),
+      padding: EdgeInsets.only(top: 100),
       child: Stack(children: <Widget>[
         Positioned(
             child:DayTasksWidget(),
@@ -52,6 +54,26 @@ class _WeekViewPageState extends State<WeekViewPage> {
           left: baseWidth + 300,
           top: baseHeight,
         ),
+        DraggableScrollableSheet(
+          initialChildSize: 0.23,
+          minChildSize: 0.23,
+          maxChildSize: 0.6,
+          builder: (context, controller ){
+            return Container(
+              padding: EdgeInsets.only(top: 10),
+              decoration: BoxDecoration(
+              color: redColor,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(50))
+              ),
+              child: Theme(
+                data: ThemeData(accentColor: redColor),
+                child: ListView.builder( itemBuilder: (BuildContext context, index){
+                  return ListTile(title: Text('index : $index'),);
+                }, itemCount: 250, controller: controller,),
+              ),
+            );
+          },
+        )
       ],)
     );
   }

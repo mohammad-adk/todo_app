@@ -15,6 +15,7 @@ class DayTasksWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
+          padding: EdgeInsets.only(top: 5),
             height: 70,
             width: 40,
             decoration: BoxDecoration(
@@ -22,7 +23,6 @@ class DayTasksWidget extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(19),
                   margin: EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),

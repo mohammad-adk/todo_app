@@ -152,14 +152,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     opacity: _opacityController,
                     child: Container(
                       margin: EdgeInsets.only(
-                          top: 120,
+                          top: 90,
                           left: (MediaQuery.of(context).size.width) / 2 - 40),
                       width: 80,
                       height: 80,
                       child: FloatingActionButton(
                         backgroundColor: Colors.red,
-                        onPressed: () =>
-                            Navigator.pushNamed(context, NewTask.routeName),
+                        onPressed:  () {
+                          if(_tabController.index == 1) {
+                            Navigator.pushNamed(context, NewTask.routeName);
+                          }
+                        },
                         child: Icon(
                           Icons.add,
                           size: 50,

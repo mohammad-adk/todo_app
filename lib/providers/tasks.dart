@@ -34,7 +34,7 @@ class Tasks with ChangeNotifier {
             Task(
               taskID: taskId,
               title: taskData['title'],
-              deadLine: taskData['deadline'],
+              deadLine: DateTime.parse(taskData['deadLine']),
               repeats:  taskData['repeats'],
               notes: taskData['notes'],
               completed: taskData['completed'],
@@ -57,7 +57,7 @@ class Tasks with ChangeNotifier {
             'title': task.title,
             'notes': task.notes,
             'repeats': task.repeats,
-            'deadLine': task.deadLine,
+            'deadLine': task.deadLine.toIso8601String(),
             'completed': task.completed,
           },
         ),

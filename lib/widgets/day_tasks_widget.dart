@@ -6,8 +6,9 @@ import '../global.dart';
 
 class DayTasksWidget extends StatelessWidget {
   final DateTime day;
+  final String text;
 
-  DayTasksWidget(this.day);
+  DayTasksWidget(this.day, this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class DayTasksWidget extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        Text("Sun", style: TextStyle(color: Colors.white),)
+        Text(text, style: TextStyle(color: Colors.white),)
       ],
     );
   }

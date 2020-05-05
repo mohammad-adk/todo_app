@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../global.dart';
@@ -20,6 +19,8 @@ class _WeekViewPageState extends State<WeekViewPage>
     _scrollController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
+      lowerBound: 0,
+      upperBound: 140,
     );
     relativeRectTween = RelativeRectTween(
       begin: RelativeRect.fromLTRB(0, 270, 0, 0),
@@ -33,59 +34,82 @@ class _WeekViewPageState extends State<WeekViewPage>
   Widget build(BuildContext context) {
     const baseWidth = 25.0;
     const baseHeight = 130.0;
+    bool init = true;
     return Container(
         color: darkGreyColor,
         padding: EdgeInsets.only(top: 100),
         child: Stack(
           children: <Widget>[
             Positioned(
-              child: DayTasksWidget(DateTime.now()),
+              child: DayTasksWidget(DateTime.now(), 'Sat'),
               left: baseWidth,
               top: baseHeight,
             ),
-            Positioned(
-              child: DayTasksWidget(DateTime.now().add(Duration(days: 1))),
-              left: baseWidth + 50,
-              top: baseHeight + 140,
+            AnimatedBuilder(
+              animation: _scrollController,
+              builder: (context, child) {
+                return Positioned(
+                  child: DayTasksWidget(
+                      DateTime.now().add(Duration(days: 1)), 'Sun'),
+                  left: baseWidth + 50,
+                  top: baseHeight + 140 - _scrollController.value,
+                );
+              },
             ),
             Positioned(
-              child: DayTasksWidget(DateTime.now().add(Duration(days: 2))),
+              child:
+                  DayTasksWidget(DateTime.now().add(Duration(days: 2)), 'Mon'),
               left: baseWidth + 100,
               top: baseHeight,
             ),
-            PositionedTransition(
-              rect: relativeRectTween.animate(_scrollController),
-              child: DayTasksWidget(DateTime.now().add(Duration(days: 3))),
-//              left: baseWidth + 150,
-//              top: baseHeight + 140 - _scrollController.value,
+            Positioned(
+              child:
+                  DayTasksWidget(DateTime.now().add(Duration(days: 3)), 'Tue'),
+              left: baseWidth + 150,
+              top: baseHeight + 140 - _scrollController.value,
             ),
             Positioned(
-              child: DayTasksWidget(DateTime.now().add(Duration(days: 4))),
+              child:
+                  DayTasksWidget(DateTime.now().add(Duration(days: 4)), 'Wed'),
               left: baseWidth + 200,
               top: baseHeight,
             ),
             Positioned(
-              child: DayTasksWidget(DateTime.now().add(Duration(days: 5))),
+              child:
+                  DayTasksWidget(DateTime.now().add(Duration(days: 5)), 'Thu'),
               left: baseWidth + 250,
               top: baseHeight + 140 - _scrollController.value,
             ),
             Positioned(
-              child: DayTasksWidget(DateTime.now().add(Duration(days: 6))),
+              child:
+                  DayTasksWidget(DateTime.now().add(Duration(days: 6)), "Fri"),
               left: baseWidth + 300,
               top: baseHeight,
             ),
             NotificationListener<ScrollNotification>(
-              onNotification: (scrollNotification){
+              onNotification: (scrollNotification) {
                 if (scrollNotification is ScrollUpdateNotification) {
-                  print(scrollNotification.scrollDelta);
+
                 }
                 return true;
               },
               child: DraggableScrollableSheet(
                 initialChildSize: 0.20,
                 minChildSize: 0.2,
-                maxChildSize: 0.6,
+                maxChildSize: 0.65,
                 builder: (context, controller) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (!init) {
+                  double position = (controller.position.viewportDimension - 120) / 1.85;
+                      setState(() {
+                        _scrollController.value = position;
+                      });
+                      print(controller.position.viewportDimension);
+                      print('scroll ${_scrollController.value}');
+                    }
+                    init = false;
+                  });
+
                   return Container(
                     padding: EdgeInsets.only(top: 10),
                     decoration: BoxDecoration(
@@ -94,15 +118,15 @@ class _WeekViewPageState extends State<WeekViewPage>
                             BorderRadius.vertical(top: Radius.circular(50))),
                     child: Theme(
                       data: ThemeData(accentColor: redColor),
-                        child: ListView.builder(
-                          itemBuilder: (BuildContext context, index) {
-                            return ListTile(
-                              title: Text('index : $index'),
-                            );
-                          },
-                          itemCount: 41,
-                          controller: controller,
-                        ),
+                      child: ListView.builder(
+                        itemBuilder: (BuildContext context, index) {
+                          return ListTile(
+                            title: Text('index : $index'),
+                          );
+                        },
+                        itemCount: 41,
+                        controller: controller,
+                      ),
                     ),
                   );
                 },

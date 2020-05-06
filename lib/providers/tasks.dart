@@ -35,7 +35,7 @@ class Tasks with ChangeNotifier {
               taskID: taskId,
               title: taskData['title'],
               deadLine: DateTime.parse(taskData['deadLine']),
-              repeats:  taskData['repeats'],
+              repeats: taskData['repeats'],
               notes: taskData['notes'],
               completed: taskData['completed'],
             ),
@@ -91,7 +91,7 @@ class Tasks with ChangeNotifier {
   }
 
   List<Task> getTasksOfDay(DateTime deadLine) {
-    if(tasks.isEmpty){
+    if (tasks.isEmpty) {
       return [];
     }
     List<Task> dayTasks = [];
@@ -106,12 +106,11 @@ class Tasks with ChangeNotifier {
     return dayTasks;
   }
 
-  int getTaskOfDayCount(DateTime day){
-    if(day != null) {
+  int getTaskOfDayCount(DateTime day) {
+    if (day != null) {
       List<Task> dayTasks = getTasksOfDay(day);
       return dayTasks.length;
-    }
-    else{
+    } else {
       return 0;
     }
   }

@@ -47,7 +47,7 @@ class _IntrayPageState extends State<IntrayPage> {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : _buildReorderableListSimple(context, taskList)),
+              : _buildListSimple(context, taskList)),
     );
   }
 
@@ -59,14 +59,14 @@ class _IntrayPageState extends State<IntrayPage> {
         onDismissed: (direction) {
           Provider.of<Tasks>(context, listen: false).deleteTask(item.taskID);
         },
-        child: IntrayTodo(
+        child: HomeTodo(
           task: item,
         ),
       ),
     );
   }
 
-  Widget _buildReorderableListSimple(
+  Widget _buildListSimple(
       BuildContext context, List<Task> taskList) {
     return Theme(
       data: ThemeData(canvasColor: Colors.transparent),
@@ -76,31 +76,32 @@ class _IntrayPageState extends State<IntrayPage> {
           return _buildListTile(context, taskList[index]);
         },
         itemCount: taskList.length,
+        cacheExtent: 100,
 //        taskList.map((Task item) => _buildListTile(context, item)).toList(),
       ),
     );
   }
 
   List<Task> getList() {
-//    taskList = Provider.of<Tasks>(context).tasks;
-//    return Provider.of<Tasks>(context).tasks;
-    if (Provider.of<Tasks>(context).tasks.length != 0 && taskList.length != 0) {
-      return Provider.of<Tasks>(context).tasks;
-    } else {
-      taskList = [];
-      for (int i = 0; i < 15; i++) {
-        taskList.add(
-          Task(
-            title: "Todo number" + i.toString(),
-            deadLine: DateTime.now().add(
-              Duration(days: 1),
-            ),
-            notes: 'Test Text ',
-            repeats: [],
-          ),
-        );
-      }
-      return taskList;
-    }
+    taskList = Provider.of<Tasks>(context).tasks;
+    return Provider.of<Tasks>(context).tasks;
+//    if (Provider.of<Tasks>(context).tasks.length != 0 && taskList.length != 0) {
+//      return Provider.of<Tasks>(context).tasks;
+//    } else {
+//      taskList = [];
+//      for (int i = 0; i < 15; i++) {
+//        taskList.add(
+//          Task(
+//            title: "Todo number" + i.toString(),
+//            deadLine: DateTime.now().add(
+//              Duration(days: 1),
+//            ),
+//            notes: 'Test Text ',
+//            repeats: [],
+//          ),
+//        );
+//      }
+//      return taskList;
+//    }
   }
 }

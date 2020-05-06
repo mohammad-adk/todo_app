@@ -31,17 +31,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _opacityController = AnimationController(
-      value: 1,
-      vsync: this
-    );
-    _opacityController2 = AnimationController(
-      vsync: this
-    );
+    _opacityController = AnimationController(value: 1, vsync: this);
+    _opacityController2 = AnimationController(vsync: this);
     _tabController = TabController(vsync: this, length: 3, initialIndex: 1)
       ..animation.addListener(() {
-            _opacityController.value = sin( _tabController.animation.value * pi/2);
-            _opacityController2.value = sin( (_tabController.animation.value - 1) * pi/2);
+        _opacityController.value = sin(_tabController.animation.value * pi / 2);
+        _opacityController2.value =
+            sin((_tabController.animation.value - 1) * pi / 2);
       });
   }
 
@@ -53,6 +49,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
+//  These codes will be kept here just to remember them
+//
 //  void _onDragStart(DragStartDetails details) {
 //    bool isDragOpenFromLeft = _opacityController.isDismissed &&
 //        details.globalPosition.dx < minDragStartEdge;
@@ -132,19 +130,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             FadeTransition(
                                 opacity:
                                     ReverseAnimation(_tabController.animation),
-                                child:
-                                    Text("Home", style: intrayTitleTextStyle)),
+                                child: Text("Week View",
+                                    style: intrayTitleTextStyle)),
                             FadeTransition(
                                 opacity: _opacityController,
-                                child: Text("Intray",
-                                    style: intrayTitleTextStyle)),
+                                child:
+                                    Text("Home", style: intrayTitleTextStyle)),
                             FadeTransition(
                                 opacity: _opacityController2,
                                 child: Text("User Info",
                                     style: intrayTitleTextStyle)),
                           ],
                         ),
-                        Container()
                       ],
                     ),
                   ),
@@ -158,12 +155,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       height: 80,
                       child: FloatingActionButton(
                         backgroundColor: Colors.red,
-                        onPressed:  () {
-                          if(_tabController.index == 1) {
+                        onPressed: () {
+                          if (_tabController.index == 1) {
                             Navigator.pushNamed(context, NewTask.routeName);
                           }
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.add,
                           size: 50,
                         ),
@@ -179,13 +176,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             title: TabBar(
               controller: _tabController,
               tabs: [
-                Tab(
-                  icon: Icon(Icons.home),
-                ),
-                Tab(
+                const Tab(
                   icon: Icon(Icons.rss_feed),
                 ),
-                Tab(
+                const Tab(
+                  icon: Icon(Icons.home),
+                ),
+                const Tab(
                   icon: Icon(Icons.perm_identity),
                 )
               ],

@@ -60,8 +60,6 @@ class _NewTaskState extends State<NewTask> {
                     _localRepeat.add(day);
                   }
                     isChecked = !isChecked;
-                  print(isChecked);
-                  print(_localRepeat);
                   });
                 },
               ),

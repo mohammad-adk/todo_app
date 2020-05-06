@@ -57,30 +57,12 @@ class _WeekViewPageState extends State<WeekViewPage>
             ),
             Positioned(
               child: GestureDetector(
-                onTap: () => dayToggle(4),
-                child: DayTasksWidget(
-                    DateTime.now().add(Duration(days: 4)), 'Wed'),
-              ),
-              left: baseWidth + 50 + _scrollController.value * 150,
-              top: baseHeight + 140 - _scrollController.value * 140,
-            ),
-            Positioned(
-              child: GestureDetector(
                 onTap: () => dayToggle(1),
                 child: DayTasksWidget(
                     DateTime.now().add(Duration(days: 1)), 'Sun'),
               ),
               left: baseWidth + 100 - _scrollController.value * 50,
               top: baseHeight,
-            ),
-            Positioned(
-              child: GestureDetector(
-                onTap: () => dayToggle(5),
-                child: DayTasksWidget(
-                    DateTime.now().add(Duration(days: 5)), 'Thu'),
-              ),
-              left: baseWidth + 150 + _scrollController.value * 100,
-              top: baseHeight + 140 - _scrollController.value * 140,
             ),
             Positioned(
               child: GestureDetector(
@@ -93,21 +75,39 @@ class _WeekViewPageState extends State<WeekViewPage>
             ),
             Positioned(
               child: GestureDetector(
+                onTap: () => dayToggle(3),
+                child: DayTasksWidget(
+                    DateTime.now().add(Duration(days: 3)), 'Tue'),
+              ),
+              left: baseWidth + 300 - _scrollController.value * 150,
+              top: baseHeight,
+            ),
+            Positioned(
+              child: GestureDetector(
+                onTap: () => dayToggle(4),
+                child: DayTasksWidget(
+                    DateTime.now().add(Duration(days: 4)), 'Wed'),
+              ),
+              left: baseWidth + 50 + _scrollController.value * 150,
+              top: baseHeight + 140 - _scrollController.value * 140,
+            ),
+            Positioned(
+              child: GestureDetector(
+                onTap: () => dayToggle(5),
+                child: DayTasksWidget(
+                    DateTime.now().add(Duration(days: 5)), 'Thu'),
+              ),
+              left: baseWidth + 150 + _scrollController.value * 100,
+              top: baseHeight + 140 - _scrollController.value * 140,
+            ),
+            Positioned(
+              child: GestureDetector(
                 onTap: () => dayToggle(6),
                 child: DayTasksWidget(
                     DateTime.now().add(Duration(days: 6)), 'Fri'),
               ),
               left: baseWidth + 250 + _scrollController.value * 50,
               top: baseHeight + 140 - _scrollController.value * 140,
-            ),
-            Positioned(
-              child: GestureDetector(
-                onTap: () => dayToggle(3),
-                child: DayTasksWidget(
-                    DateTime.now().add(Duration(days: 3)), 'Tue'),
-              ),
-              left: baseWidth + 300- _scrollController.value * 150,
-              top: baseHeight,
             ),
             DraggableScrollableSheet(
               initialChildSize: 0.20,
@@ -121,11 +121,9 @@ class _WeekViewPageState extends State<WeekViewPage>
                     setState(() {
                       _scrollController.value = position;
                     });
-                    print(_scrollController.value);
                   }
                   init = false;
                 });
-
                 return Container(
                   padding: EdgeInsets.only(top: 10),
                   decoration: BoxDecoration(

@@ -1,11 +1,17 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../global.dart';
 import '../providers/auth.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
+
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> with SingleTickerProviderStateMixin{
+
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<Auth>(context);
@@ -17,7 +23,7 @@ class SettingsPage extends StatelessWidget {
     final _usernameFocus = FocusNode();
     final _submitData = _user.saveUserInfo;
     return Container(
-      color: darkGreyColor,
+      color: Theme.of(context).primaryColor,
       height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.only(top: 250),
       child: SingleChildScrollView(
@@ -90,13 +96,19 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ],
               ),
-
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   FlatButton(
                     child: Text('LogOut', style: TextStyle(color: Colors.red)),
                     onPressed: _user.logout,
+                  ),
+                  FlatButton(
+                    child: Text(
+                      'Light Mode',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    onPressed: () {},
                   ),
                 ],
               )

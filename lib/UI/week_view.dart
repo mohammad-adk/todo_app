@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/models/task.dart';
 
-import '../global.dart';
 import '../widgets/day_tasks_widget.dart';
 import '../models/task.dart';
 import '../providers/tasks.dart';
@@ -44,7 +43,7 @@ class _WeekViewPageState extends State<WeekViewPage>
     List<Task> tasks = Provider.of<Tasks>(context)
         .getTasksOfDay(DateTime.now().add(Duration(days: dayIndex)));
     return Container(
-        color: darkGreyColor,
+        color: Theme.of(context).primaryColor,
         padding: EdgeInsets.only(top: 100),
         child: Stack(
           children: <Widget>[
@@ -127,11 +126,11 @@ class _WeekViewPageState extends State<WeekViewPage>
                 return Container(
                   padding: EdgeInsets.only(top: 10),
                   decoration: BoxDecoration(
-                      color: redColor,
+                      color: Theme.of(context).accentColor,
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(50))),
                   child: Theme(
-                    data: ThemeData(accentColor: redColor),
+                    data: ThemeData(accentColor: Theme.of(context).accentColor),
                     child: ListView.builder(
                       itemBuilder: (BuildContext context, index) {
                         return ListTile(

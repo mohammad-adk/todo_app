@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
           title: 'Todo App',
           theme: ThemeData(
             primarySwatch: Colors.purple,
+            accentColor: Colors.grey[600],
           ),
           home: auth.isAuth
               ? MyHomePage()

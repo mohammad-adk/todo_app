@@ -9,6 +9,10 @@ import 'intray_page.dart';
 import '../global.dart';
 
 class HomeScaffold extends StatefulWidget {
+  final int initialIndex;
+
+  HomeScaffold(this.initialIndex);
+
   @override
   _HomeScaffoldState createState() => _HomeScaffoldState();
 }
@@ -29,7 +33,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
         _opacityController.value = sin(_tabController.animation.value * pi / 2);
         _opacityController2.value =
             sin((_tabController.animation.value - 1) * pi / 2);
-      });
+      })..animateTo(widget.initialIndex);
   }
 
   @override

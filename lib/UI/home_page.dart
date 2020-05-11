@@ -26,7 +26,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     _slideController = AnimationController(
       vsync: this,
       value: 1,
-      duration: Duration(milliseconds: 700),
+      duration: Duration(milliseconds: 350),
+      animationBehavior: AnimationBehavior.preserve
     )
       ..addListener(() {
         setState(() {});
@@ -34,22 +35,27 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
+  dispose(){
+    _slideController.dispose();
+    super.dispose();
+  }
+
   ThemeData dark = ThemeData(
       primaryColor: darkGreyColor,
-      accentColor: redColor,
+      accentColor: Colors.grey[600],
       splashColor: Colors.white);
 
   ThemeData light = ThemeData(
       primaryColor: Colors.blueGrey,
-      accentColor: redColor,
+      accentColor: Colors.white70,
       splashColor: Colors.white);
 
   void toggleDarkMode() {
     _slideController.forward(from: 0);
+          isDark = !isDark;
     Timer(
         Duration(milliseconds: 700),
             () {
-          isDark = !isDark;
         }
     );
   }
@@ -60,16 +66,23 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         top: true,
         child: Stack(
           children: <Widget>[
-            Theme(data: isDark ? light : dark, child: HomeScaffold()),
+            Theme(data: !isDark ? dark : light , child: HomeScaffold(2)),
             PageReveal(
               revealPercent: _slideController.value,
               child:
-              Theme(data: isDark ? light : dark, child: HomeScaffold()),
+              Theme(data: isDark ? dark : light, child: HomeScaffold(1)),
             ),
             Positioned(
               right: 20,
               bottom: 20,
               child: FloatingActionButton(
+//                backgroundColor: isDark ? darkGreyColor : Colors.blueGrey,
+              backgroundColor: Colors.transparent,
+                focusElevation: 0,
+                highlightElevation: 0,
+                hoverColor: Colors.transparent,
+                hoverElevation: 0,
+                focusColor: null,
                 onPressed: toggleDarkMode,
                 child: Icon(Icons.wb_sunny),
                 elevation: 0,

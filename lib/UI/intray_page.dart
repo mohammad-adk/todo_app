@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/task.dart';
-import '../global.dart';
 import '../widgets/intray_todo_widget.dart';
 import '../providers/tasks.dart';
 
@@ -42,7 +41,7 @@ class _IntrayPageState extends State<IntrayPage> {
     return Provider(
       create: (_) => Tasks(),
       child: Container(
-          color: darkGreyColor,
+          color: Theme.of(context).primaryColor,
           child: _isLoading
               ? Center(
                   child: CircularProgressIndicator(),
@@ -68,9 +67,7 @@ class _IntrayPageState extends State<IntrayPage> {
 
   Widget _buildListSimple(
       BuildContext context, List<Task> taskList) {
-    return Theme(
-      data: ThemeData(canvasColor: Colors.transparent),
-      child: ListView.builder(
+    return ListView.builder(
         padding: EdgeInsets.only(top: 250),
         itemBuilder: (ctx, index) {
           return _buildListTile(context, taskList[index]);
@@ -78,8 +75,7 @@ class _IntrayPageState extends State<IntrayPage> {
         itemCount: taskList.length,
         cacheExtent: 100,
 //        taskList.map((Task item) => _buildListTile(context, item)).toList(),
-      ),
-    );
+      );
   }
 
   List<Task> getList() {

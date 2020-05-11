@@ -17,7 +17,7 @@ class HomeTodo extends StatelessWidget {
       height: 100,
       width: 100,
       decoration: BoxDecoration(
-          color: redColor,
+          color: Theme.of(context).accentColor,
           borderRadius: const BorderRadius.all(Radius.circular(20)),
           boxShadow: [
              BoxShadow(

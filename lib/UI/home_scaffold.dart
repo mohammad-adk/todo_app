@@ -89,7 +89,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
                   ],
                 ),
               ),
-              FadeTransition(
+              widget.initialIndex == 1 ? FadeTransition(
                 opacity: _opacityController,
                 child: Container(
                   margin: EdgeInsets.only(
@@ -99,6 +99,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
                   height: 80,
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).accentColor,
+                    heroTag: "add",
                     onPressed: () {
                       if (_tabController.index == 1) {
                         Navigator.pushNamed(context, NewTask.routeName);
@@ -110,7 +111,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
                     ),
                   ),
                 ),
-              ),
+              ): Container(),
             ],
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/providers/tasks.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
 import './UI/home_page.dart';
 import 'UI/auth_screen.dart';
@@ -8,10 +9,33 @@ import './providers/auth.dart';
 import './UI/splash_screen.dart';
 import './providers/tasks.dart';
 import './UI/new_task.dart';
+import 'global.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
+  ThemeData _buildTheme(Brightness brightness) {
+    return brightness == Brightness.dark
+        ? ThemeData.dark().copyWith(
+        textTheme: ThemeData.dark().textTheme.apply(
+          bodyColor: Colors.white,
+          displayColor: Colors.white,
+          fontFamily: 'Basier',
+        ),
+        primaryColor: darkGreyColor,
+        accentColor: Colors.grey[600],
+        splashColor: Colors.white)
+        : ThemeData.light().copyWith(
+        textTheme: ThemeData.light().textTheme.apply(
+          bodyColor: Colors.black,
+          displayColor: Colors.black,
+          fontFamily: 'Basier',
+        ),
+        primaryColor: Colors.blueGrey,
+        accentColor: Colors.white,
+        splashColor: Colors.white);
+  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -25,27 +49,28 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: Consumer<Auth>(
-        builder: (ctx, auth, _) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Todo App',
-          theme: ThemeData(
-            primarySwatch: Colors.purple,
-            accentColor: Colors.grey[600],
+        builder: (ctx, auth, _) => DynamicTheme(
+          defaultBrightness: Brightness.light,
+          data: (brightness) => _buildTheme(brightness),
+          themedWidgetBuilder:(context, theme) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Todo App',
+            theme: theme,
+            home: auth.isAuth
+                ? MyHomePage()
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (ctx, authResultSnapshot) =>
+                        authResultSnapshot.connectionState ==
+                                ConnectionState.waiting
+                            ? SplashScreen()
+                            : AuthScreen(),
+                  ),
+            routes: {
+              MyHomePage.routeName: (ctx) => MyHomePage(),
+              NewTask.routeName:(ctx) => NewTask(),
+            },
           ),
-          home: auth.isAuth
-              ? MyHomePage()
-              : FutureBuilder(
-                  future: auth.tryAutoLogin(),
-                  builder: (ctx, authResultSnapshot) =>
-                      authResultSnapshot.connectionState ==
-                              ConnectionState.waiting
-                          ? SplashScreen()
-                          : AuthScreen(),
-                ),
-          routes: {
-            MyHomePage.routeName: (ctx) => MyHomePage(),
-            NewTask.routeName:(ctx) => NewTask(),
-          },
         ),
       ),
     );

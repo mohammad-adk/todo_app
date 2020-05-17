@@ -298,9 +298,10 @@ class _NewTaskState extends State<NewTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkGreyColor,
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: Text('Add a New Task'),
+        backgroundColor: Theme.of(context).accentColor,
       ),
       body: SingleChildScrollView(
         child: Container(

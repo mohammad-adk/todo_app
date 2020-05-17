@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:todo_app/widgets/page_reveal.dart';
 
 import '../global.dart';
 import './home_scaffold.dart';
-
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title, this.color}) : super(key: key);
@@ -24,18 +24,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   initState() {
     _slideController = AnimationController(
-      vsync: this,
-      value: 1,
-      duration: Duration(milliseconds: 350),
-      animationBehavior: AnimationBehavior.preserve
-    )
+        vsync: this,
+        value: 1,
+        duration: Duration(milliseconds: 350),
+        animationBehavior: AnimationBehavior.preserve)
       ..addListener(() {
         setState(() {});
       });
     super.initState();
   }
 
-  dispose(){
+  dispose() {
     _slideController.dispose();
     super.dispose();
   }
@@ -47,17 +46,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   ThemeData light = ThemeData(
       primaryColor: Colors.blueGrey,
-      accentColor: Colors.white70,
+      accentColor: Colors.white,
       splashColor: Colors.white);
 
   void toggleDarkMode() {
     _slideController.forward(from: 0);
-          isDark = !isDark;
-    Timer(
-        Duration(milliseconds: 700),
-            () {
-        }
-    );
+    isDark = !isDark;
+    DynamicTheme.of(context).setThemeData(isDark ? dark : light) ;
   }
 
   @override
@@ -66,18 +61,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         top: true,
         child: Stack(
           children: <Widget>[
-            Theme(data: !isDark ? dark : light , child: HomeScaffold(2)),
+            Theme(data: !isDark ? dark : light, child: HomeScaffold(2)),
             PageReveal(
               revealPercent: _slideController.value,
-              child:
-              Theme(data: isDark ? dark : light, child: HomeScaffold(1)),
+              child: Theme(data: isDark ? dark : light, child: HomeScaffold(1)),
             ),
             Positioned(
               right: 20,
               bottom: 20,
               child: FloatingActionButton(
-//                backgroundColor: isDark ? darkGreyColor : Colors.blueGrey,
-              backgroundColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
                 focusElevation: 0,
                 highlightElevation: 0,
                 hoverColor: Colors.transparent,
@@ -86,12 +79,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 onPressed: toggleDarkMode,
                 child: Icon(Icons.wb_sunny),
                 elevation: 0,
+                heroTag: "Tag",
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 }
-
-

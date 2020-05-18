@@ -10,8 +10,9 @@ import '../global.dart';
 
 class HomeScaffold extends StatefulWidget {
   final int initialIndex;
+  final Function toggleDarkMode;
 
-  HomeScaffold(this.initialIndex);
+  HomeScaffold(this.initialIndex, this.toggleDarkMode);
 
   @override
   _HomeScaffoldState createState() => _HomeScaffoldState();
@@ -54,7 +55,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
             children: [
               WeekViewPage(),
               IntrayPage(),
-              SettingsPage(),
+              SettingsPage(widget.toggleDarkMode),
             ],
           ),
           Stack(

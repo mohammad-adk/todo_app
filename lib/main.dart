@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Basier',
         ),
         primaryColor: darkGreyColor,
-        accentColor: Colors.grey[600],
+        accentColor: Colors.black,
         splashColor: Colors.white)
         : ThemeData.light().copyWith(
         textTheme: ThemeData.light().textTheme.apply(
@@ -34,7 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         primaryColor: Colors.blueGrey,
         accentColor: Colors.white,
-        splashColor: Colors.white);
+        splashColor: Colors.white,
+        
+    );
   }
   @override
   Widget build(BuildContext context) {

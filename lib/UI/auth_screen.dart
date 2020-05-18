@@ -385,7 +385,7 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                   height: 15,
                 ),
                 if (_isLoading)
-                  CircularProgressIndicator()
+                  CircularProgressIndicator(backgroundColor: Colors.blue,)
                 else
                   Container(
                     width: 115,

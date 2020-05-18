@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -61,26 +59,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         top: true,
         child: Stack(
           children: <Widget>[
-            Theme(data: !isDark ? dark : light, child: HomeScaffold(2)),
+            Theme(data: !isDark ? dark : light, child: HomeScaffold(2, toggleDarkMode)),
             PageReveal(
               revealPercent: _slideController.value,
-              child: Theme(data: isDark ? dark : light, child: HomeScaffold(1)),
-            ),
-            Positioned(
-              right: 20,
-              bottom: 20,
-              child: FloatingActionButton(
-                backgroundColor: Colors.transparent,
-                focusElevation: 0,
-                highlightElevation: 0,
-                hoverColor: Colors.transparent,
-                hoverElevation: 0,
-                focusColor: null,
-                onPressed: toggleDarkMode,
-                child: Icon(Icons.wb_sunny),
-                elevation: 0,
-                heroTag: "Tag",
-              ),
+              child: Theme(data: isDark ? dark : light, child: HomeScaffold(1, toggleDarkMode)),
             ),
           ],
         ));

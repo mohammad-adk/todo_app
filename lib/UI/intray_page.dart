@@ -46,7 +46,9 @@ class _IntrayPageState extends State<IntrayPage> {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : _buildListSimple(context, taskList)),
+              : taskList.isEmpty ? Center(
+            child: Text('You have no notes!', style: TextStyle(color: Colors.white, fontSize: 25),),
+          ) : _buildListSimple(context, taskList)),
     );
   }
 

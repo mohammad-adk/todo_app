@@ -1,17 +1,20 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
 
 class SettingsPage extends StatefulWidget {
+  final Function toggleDarkMode;
+
+  SettingsPage(this.toggleDarkMode);
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> with SingleTickerProviderStateMixin{
-
+class _SettingsPageState extends State<SettingsPage>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<Auth>(context);
@@ -96,22 +99,36 @@ class _SettingsPageState extends State<SettingsPage> with SingleTickerProviderSt
                   ),
                 ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  FlatButton(
-                    child: Text('LogOut', style: TextStyle(color: Colors.red)),
-                    onPressed: _user.logout,
-                  ),
-                  FlatButton(
-                    child: Text(
-                      'Light Mode',
-                      style: TextStyle(color: Colors.grey),
+              Container(
+                height: 340,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        FlatButton(
+                          child: Text('LogOut',
+                              style: TextStyle(color: Colors.red)),
+                          onPressed: _user.logout,
+                        ),
+                        FloatingActionButton(
+                          backgroundColor: Colors.transparent,
+                          focusElevation: 0,
+                          highlightElevation: 0,
+                          hoverColor: Colors.transparent,
+                          hoverElevation: 0,
+                          focusColor: null,
+                          onPressed: widget.toggleDarkMode,
+                          child: Icon(Icons.wb_sunny),
+                          elevation: 0,
+                          heroTag: "Tag",
+                        )
+                      ],
                     ),
-                    onPressed: () {},
-                  ),
-                ],
-              )
+                  ],
+                ),
+              ),
             ],
           ),
         ),

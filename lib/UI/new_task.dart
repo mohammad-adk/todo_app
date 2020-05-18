@@ -301,7 +301,7 @@ class _NewTaskState extends State<NewTask> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: Text('Add a New Task'),
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).appBarTheme.color,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -435,8 +435,9 @@ class _NewTaskState extends State<NewTask> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).accentColor,
         onPressed: _submitData,
-        child: Icon(Icons.done),
+        child: Icon(Icons.done,),
       ),
     );
   }

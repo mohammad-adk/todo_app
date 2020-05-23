@@ -100,7 +100,7 @@ class _SettingsPageState extends State<SettingsPage>
                 ],
               ),
               Container(
-                height: 340,
+                height: 325,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
@@ -120,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage>
                           hoverElevation: 0,
                           focusColor: null,
                           onPressed: widget.toggleDarkMode,
-                          child: Icon(Icons.wb_sunny),
+                          child: Icon(Icons.wb_sunny, color: Colors.white,),
                           elevation: 0,
                           heroTag: "Tag",
                         )

@@ -7,7 +7,7 @@ class DayTasksWidget extends StatelessWidget {
   final DateTime day;
   final String text;
 
-  DayTasksWidget(this.day, this.text);
+  const DayTasksWidget(this.day, this.text);
 
   @override
   Widget build(BuildContext context) {

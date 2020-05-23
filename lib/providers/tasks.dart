@@ -90,6 +90,24 @@ class Tasks with ChangeNotifier {
     existingTask = null;
   }
 
+  Future<void> updateTask(String id, Task task) async {
+    var prodIndex = _tasks.indexWhere((tsk) => tsk.taskID == id);
+    if (prodIndex >= 0) {
+      final url =
+          'https://todo-cfb1d.firebaseio.com/tasks/$userId/$id.json?auth=$authToken';
+      await http.patch(url,
+          body: json.encode({
+            'title': task.title,
+            'notes': task.notes,
+            'repeats': task.repeats,
+            'deadLine': task.deadLine.toIso8601String(),
+            'completed': task.completed,
+          }));
+      _tasks[prodIndex] = task;
+      notifyListeners();
+    }
+  }
+
   List<Task> getTasksOfDay(DateTime deadLine) {
     if (tasks.isEmpty) {
       return [];

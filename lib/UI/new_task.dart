@@ -25,7 +25,8 @@ class _NewTaskState extends State<NewTask> {
     Provider.of<Tasks>(context, listen: false).addTasks(
       Task(
         title: _titleController.value.text,
-        deadLine: DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,_selectedTime.hour, _selectedTime.minute),
+        deadLine: DateTime(_selectedDate.year, _selectedDate.month,
+            _selectedDate.day, _selectedTime.hour, _selectedTime.minute),
         notes: _notesController.value.text,
         repeats: _repeat,
       ),
@@ -54,11 +55,11 @@ class _NewTaskState extends State<NewTask> {
                 value: isChecked,
                 onChanged: (_) {
                   setModalState(() {
-                  if (isChecked){
-                    _localRepeat.remove(day);}
-                  else{
-                    _localRepeat.add(day);
-                  }
+                    if (isChecked) {
+                      _localRepeat.remove(day);
+                    } else {
+                      _localRepeat.add(day);
+                    }
                     isChecked = !isChecked;
                   });
                 },
@@ -68,9 +69,9 @@ class _NewTaskState extends State<NewTask> {
         ),
         onPressed: () {
           setModalState(() {
-            if (isChecked){
-              _localRepeat.remove(day);}
-            else{
+            if (isChecked) {
+              _localRepeat.remove(day);
+            } else {
               _localRepeat.add(day);
             }
             isChecked = !isChecked;
@@ -112,13 +113,13 @@ class _NewTaskState extends State<NewTask> {
                           color: Colors.white),
                     ),
                   ),
-                  weekButton('Saturday',_localRepeat),
-                  weekButton('Sunday',_localRepeat),
-                  weekButton('Monday',_localRepeat),
-                  weekButton('Tuesday',_localRepeat),
-                  weekButton('Wednesday',_localRepeat),
-                  weekButton('Thursday',_localRepeat),
-                  weekButton('Friday',_localRepeat),
+                  weekButton('Saturday', _localRepeat),
+                  weekButton('Sunday', _localRepeat),
+                  weekButton('Monday', _localRepeat),
+                  weekButton('Tuesday', _localRepeat),
+                  weekButton('Wednesday', _localRepeat),
+                  weekButton('Thursday', _localRepeat),
+                  weekButton('Friday', _localRepeat),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
@@ -176,16 +177,19 @@ class _NewTaskState extends State<NewTask> {
                   SizedBox(
                     height: 30,
                   ),
-                  Divider(height: 1, thickness: 1,),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                  ),
                   Row(
                     children: <Widget>[
                       FlatButton(
                         child: Text(
                           'Once',
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
                           ),
                           textAlign: TextAlign.end,
                         ),
@@ -199,7 +203,10 @@ class _NewTaskState extends State<NewTask> {
                       ),
                     ],
                   ),
-                  Divider(height: 1, thickness: 1,),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                  ),
                   Row(
                     children: <Widget>[
                       FlatButton(
@@ -215,17 +222,29 @@ class _NewTaskState extends State<NewTask> {
                           setState(() {
                             _repeatText = 'Daily';
                           });
-                          _repeat = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                          _repeat = [
+                            'Sunday',
+                            'Monday',
+                            'Tuesday',
+                            'Wednesday',
+                            'Thursday',
+                            'Friday',
+                            'Saturday'
+                          ];
                           Navigator.of(context).pop();
                         },
                       ),
                     ],
                   ),
-                  Divider(height: 1, thickness: 1,),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                  ),
                   Row(
-
                     children: <Widget>[
-                      SizedBox(width: 6,),
+                      SizedBox(
+                        width: 6,
+                      ),
                       FlatButton(
                         child: Text(
                           'Mon to Fri',
@@ -239,16 +258,27 @@ class _NewTaskState extends State<NewTask> {
                           setState(() {
                             _repeatText = 'Mon to Fri';
                           });
-                          _repeat = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                          _repeat = [
+                            'Monday',
+                            'Tuesday',
+                            'Wednesday',
+                            'Thursday',
+                            'Friday'
+                          ];
                           Navigator.of(context).pop();
                         },
                       ),
                     ],
                   ),
-                  Divider(height: 1, thickness: 1,),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                  ),
                   Row(
                     children: <Widget>[
-                      SizedBox(width: 6,),
+                      SizedBox(
+                        width: 6,
+                      ),
                       FlatButton(
                         child: Text(
                           'Custom',
@@ -280,16 +310,24 @@ class _NewTaskState extends State<NewTask> {
       if (pickedDate == null) {
         return;
       } else {
-        showTimePicker(
-                context: context, initialTime: TimeOfDay(hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute))
-            .then((pickedTime) {
-          if (pickedTime == null) {
-            return;
-          }
-          setState(() {
-            _selectedDate = pickedDate;
-            _selectedTime = pickedTime;
-          });
+        setState(() {
+          _selectedDate = pickedDate;
+        });
+      }
+    });
+  }
+
+  void _presentTimePicker() {
+    showTimePicker(
+            context: context,
+            initialTime: TimeOfDay(
+                hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute))
+        .then((pickedTime) {
+      if (pickedTime == null) {
+        return;
+      } else {
+        setState(() {
+          _selectedTime = pickedTime;
         });
       }
     });
@@ -334,7 +372,6 @@ class _NewTaskState extends State<NewTask> {
                           style: BorderStyle.solid),
                       borderRadius: BorderRadius.circular(20),
                     ),
-
                   ),
                   controller: _titleController,
                   onSubmitted: (_) => _submitData(),
@@ -384,7 +421,7 @@ class _NewTaskState extends State<NewTask> {
                     ),
                     FlatButton(
                       child: Text(
-                        'Choose date & time',
+                        'Choose date ',
                       ),
                       textColor: Colors.purple,
                       onPressed: _presentDatePicker,
@@ -393,13 +430,20 @@ class _NewTaskState extends State<NewTask> {
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
                     _selectedTime == null
                         ? "No time chosen"
                         : 'chosen time : ${_selectedTime.hour} : ${_selectedTime.minute}',
                     style: TextStyle(color: Colors.grey, fontSize: 18),
+                  ),
+                  FlatButton(
+                    child: Text(
+                      'Choose time',
+                    ),
+                    textColor: Colors.purple,
+                    onPressed: _presentTimePicker,
                   ),
                 ],
               ),
@@ -437,7 +481,9 @@ class _NewTaskState extends State<NewTask> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).accentColor,
         onPressed: _submitData,
-        child: Icon(Icons.done,),
+        child: Icon(
+          Icons.done,
+        ),
       ),
     );
   }

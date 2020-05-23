@@ -14,19 +14,30 @@ class _IntrayPageState extends State<IntrayPage> {
   List<Task> taskList = [];
   bool _isLoading = false;
   bool isDisposed = false;
+  bool isInit = true;
 
   @override
   void initState() {
-    _isLoading = true;
-    Provider.of<Tasks>(context, listen: false).fetchAndSetTasks().then((_) {
-      if (!isDisposed) {
-        setState(() {
-          _isLoading = false;
-        });
-      } else
-        return;
-    });
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (isInit) {
+      _isLoading = true;
+      Provider.of<Tasks>(context, listen: false).fetchAndSetTasks().then((_) {
+        if (!isDisposed) {
+          setState(() {
+            _isLoading = false;
+          });
+        } else {
+          return;
+        }
+      });
+      isInit = false;
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -38,68 +49,79 @@ class _IntrayPageState extends State<IntrayPage> {
   @override
   Widget build(BuildContext context) {
     taskList = getList();
-    return Provider(
-      create: (_) => Tasks(),
-      child: Container(
-          color: Theme.of(context).primaryColor,
-          child: _isLoading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : taskList.isEmpty ? Center(
-            child: Text('You have no notes!', style: TextStyle(color: Colors.white, fontSize: 25),),
-          ) : _buildListSimple(context, taskList)),
-    );
+    return Container(
+        color: Theme.of(context).primaryColor,
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : taskList.isEmpty
+                ? Center(
+                    child: Text(
+                      'You have no notes!',
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.only(top: 250),
+                    itemBuilder: (ctx, index) {
+                      return _buildListTile(context, taskList[index]);
+                    },
+                    itemCount: taskList.length,
+                    cacheExtent: 100,
+                  ));
   }
 
   Widget _buildListTile(BuildContext context, Task item) {
-    return ListTile(
-      key: Key(item.taskID),
-      title: Dismissible(
+    return  Dismissible(
         key: Key(item.taskID),
         onDismissed: (direction) {
           Provider.of<Tasks>(context, listen: false).deleteTask(item.taskID);
         },
-        child: HomeTodo(
+        child: ListTile(
+          key: Key(item.taskID),
+          title:HomeTodo(
           task: item,
+        ),),
+        background: Container(
+          color: Theme.of(context).errorColor,
+          child: Icon(
+            Icons.delete,
+            size: 40,
+            color: Colors.white,
+          ),
+          alignment: Alignment.centerLeft,
+//          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         ),
-      ),
-    );
-  }
-
-  Widget _buildListSimple(
-      BuildContext context, List<Task> taskList) {
-    return ListView.builder(
-        padding: EdgeInsets.only(top: 250),
-        itemBuilder: (ctx, index) {
-          return _buildListTile(context, taskList[index]);
+        direction: DismissDirection.startToEnd,
+        confirmDismiss: (direction) {
+          return showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                title: Text('Are you sure'),
+                content:
+                Text('Do you want to remove the note?'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('No'),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('Yes'),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              ));
         },
-        itemCount: taskList.length,
-        cacheExtent: 100,
-//        taskList.map((Task item) => _buildListTile(context, item)).toList(),
-      );
+    );
   }
 
   List<Task> getList() {
     taskList = Provider.of<Tasks>(context).tasks;
-    return Provider.of<Tasks>(context).tasks;
-//    if (Provider.of<Tasks>(context).tasks.length != 0 && taskList.length != 0) {
-//      return Provider.of<Tasks>(context).tasks;
-//    } else {
-//      taskList = [];
-//      for (int i = 0; i < 15; i++) {
-//        taskList.add(
-//          Task(
-//            title: "Todo number" + i.toString(),
-//            deadLine: DateTime.now().add(
-//              Duration(days: 1),
-//            ),
-//            notes: 'Test Text ',
-//            repeats: [],
-//          ),
-//        );
-//      }
-//      return taskList;
-//    }
+    return taskList;
   }
 }

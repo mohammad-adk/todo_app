@@ -132,7 +132,7 @@ class _WeekViewPageState extends State<WeekViewPage>
                   child: Theme(
                     data: ThemeData(accentColor: Theme.of(context).accentColor),
                     child: ListView.builder(
-                      itemBuilder: (BuildContext context, index) {
+                      itemBuilder: (BuildContext _, index) {
                         return ListTile(
                           title: Text('Title: ${tasks[index].title}'),
                           subtitle: Text('Notes: ${tasks[index].notes}'),

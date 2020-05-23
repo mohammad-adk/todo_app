@@ -18,11 +18,6 @@ class MyApp extends StatelessWidget {
   ThemeData _buildTheme(Brightness brightness) {
     return brightness == Brightness.dark
         ? ThemeData.dark().copyWith(
-        textTheme: ThemeData.dark().textTheme.apply(
-          bodyColor: Colors.white,
-          displayColor: Colors.white,
-          fontFamily: 'Basier',
-        ),
         primaryColor: darkGreyColor,
         accentColor: Colors.black,
         splashColor: Colors.white)
@@ -38,6 +33,8 @@ class MyApp extends StatelessWidget {
         
     );
   }
+
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
